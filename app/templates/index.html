@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · Monitoring Demo{% endblock %}
+
+{% block content %}
+<section class="hero-panel">
+  <p class="eyebrow">Phase 0 shell</p>
+  <h1>Monitoring — read-only demo</h1>
+  <p class="lede">
+    Agentless Linux host metrics for L1–L3 teams. Sign-in, inventory, and live
+    CPU / memory / network / ports land in later phases.
+  </p>
+</section>
+
+<section class="placeholder-grid" aria-label="Upcoming panels">
+  <article class="placeholder-card">
+    <h2>Servers</h2>
+    <p>Inventory and reachability will appear here after admin setup.</p>
+  </article>
+  <article class="placeholder-card">
+    <h2>Live metrics</h2>
+    <p>CPU, memory, network, and listening ports refresh every 10 seconds.</p>
+  </article>
+</section>
+{% endblock %}
