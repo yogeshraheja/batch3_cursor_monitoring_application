@@ -128,16 +128,16 @@ Target hosts must accept SSH from the Cursor machine with the credentials provid
 
 ## 10. Acceptance Criteria
 
-- [ ] Unauthenticated user cannot see metrics or inventory.
-- [ ] `admin` logs in with hashed-password verification.
-- [ ] Admin can add a Linux server (host, port, user, password or key).
-- [ ] Admin can remove a server.
-- [ ] Detail view shows CPU (overall + per-core), memory, network per interface, listening ports + connection info.
-- [ ] UI refreshes metrics about every 10 seconds.
-- [ ] SSH/connection failures are shown without breaking the app.
-- [ ] App runs locally with SQLite (or equivalent) and no cloud dependencies.
-- [ ] App listens on `0.0.0.0:5777`.
-- [ ] Metrics views have no edit/write controls.
+- [x] Unauthenticated user cannot see metrics or inventory.
+- [x] `admin` logs in with hashed-password verification.
+- [x] Admin can add a Linux server (host, port, user, password or key).
+- [x] Admin can remove a server.
+- [x] Detail view shows CPU (overall + per-core), memory, network per interface, listening ports + connection info.
+- [x] UI refreshes metrics about every 10 seconds.
+- [x] SSH/connection failures are shown without breaking the app.
+- [x] App runs locally with SQLite (or equivalent) and no cloud dependencies.
+- [x] App listens on `0.0.0.0:5777`.
+- [x] Metrics views have no edit/write controls.
 
 ## 11. Risks & Demo Notes
 

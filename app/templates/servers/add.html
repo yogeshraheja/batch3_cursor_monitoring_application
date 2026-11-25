@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Add server · Monitoring Demo{% endblock %}
+
+{% block content %}
+<section class="hero-panel compact">
+  <p class="eyebrow">Inventory</p>
+  <h1>Add server</h1>
+  <p class="lede">SSH credentials are stored in local SQLite for this demo only. Prefer a key path on the Cursor host over pasting a key.</p>
+</section>
+
+<form method="post" class="stack-form" novalidate>
+  {{ form.hidden_tag() }}
+
+  <label>
+    <span>{{ form.name.label.text }}</span>
+    {{ form.name() }}
+    {% for error in form.name.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </label>
+
+  <div class="form-row">
+    <label>
+      <span>{{ form.host.label.text }}</span>
+      {{ form.host(placeholder="hostname or IP") }}
+      {% for error in form.host.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+    </label>
+    <label>
+      <span>{{ form.ssh_port.label.text }}</span>
+      {{ form.ssh_port() }}
+      {% for error in form.ssh_port.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+    </label>
+  </div>
+
+  <label>
+    <span>{{ form.ssh_username.label.text }}</span>
+    {{ form.ssh_username() }}
+    {% for error in form.ssh_username.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </label>
+
+  <fieldset class="auth-type">
+    <legend>Auth method</legend>
+    {% for subfield in form.auth_type %}
+      <label class="radio-line">{{ subfield }} {{ subfield.label.text }}</label>
+    {% endfor %}
+    {% for error in form.auth_type.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </fieldset>
+
+  <label>
+    <span>{{ form.ssh_password.label.text }}</span>
+    {{ form.ssh_password(autocomplete="new-password") }}
+    {% for error in form.ssh_password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </label>
+
+  <label>
+    <span>{{ form.private_key_path.label.text }}</span>
+    {{ form.private_key_path(placeholder="/home/you/.ssh/id_ed25519") }}
+    {% for error in form.private_key_path.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </label>
+
+  <label>
+    <span>{{ form.private_key_content.label.text }}</span>
+    {{ form.private_key_content(rows=4) }}
+    {% for error in form.private_key_content.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+  </label>
+
+  <div class="cta-row">
+    {{ form.submit(class_="btn primary") }}
+    <a class="btn ghost" href="{{ url_for('servers.list_servers') }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Servers · Monitoring Demo{% endblock %}
+
+{% block content %}
+<section class="hero-panel compact">
+  <p class="eyebrow">Inventory</p>
+  <h1>Servers</h1>
+  <p class="lede">Reachability is checked after add and on demand. Metrics are read-only on each host detail page.</p>
+  <p class="cta-row">
+    <a class="btn primary" href="{{ url_for('servers.add_server') }}">Add server</a>
+  </p>
+</section>
+
+{% if servers %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Host</th>
+          <th>Port</th>
+          <th>Status</th>
+          <th>Last checked</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for server in servers %}
+          <tr>
+            <td><a href="{{ url_for('servers.server_detail', server_id=server.id) }}">{{ server.name }}</a></td>
+            <td>{{ server.host }}</td>
+            <td>{{ server.ssh_port }}</td>
+            <td><span class="status status-{{ server.last_status or 'unknown' }}">{{ server.last_status or 'unknown' }}</span></td>
+            <td class="muted">{{ server.last_checked_at or '—' }}</td>
+            <td class="actions">
+              <form method="post" action="{{ url_for('servers.check_server', server_id=server.id) }}" class="inline-form">
+                {{ delete_form.hidden_tag() }}
+                <button type="submit" class="btn small ghost">Check</button>
+              </form>
+              <form method="post" action="{{ url_for('servers.delete_server', server_id=server.id) }}" class="inline-form"
+                    onsubmit="return confirm('Remove {{ server.name }} from monitoring?');">
+                {{ delete_form.hidden_tag() }}
+                <button type="submit" class="btn small danger">Remove</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="muted">Inventory is empty.</p>
+{% endif %}
+{% endblock %}

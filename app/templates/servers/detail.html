@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}{{ server.name }} · Metrics{% endblock %}
+
+{% block head %}
+  <meta name="refresh-interval" content="10">
+{% endblock %}
+
+{% block content %}
+<section class="hero-panel compact">
+  <p class="eyebrow">Live metrics · auto-refresh 10s</p>
+  <h1>{{ server.name }}</h1>
+  <p class="lede">
+    {{ server.host }}:{{ server.ssh_port }} as {{ server.ssh_username }}
+    · <span class="status status-{{ server.last_status or 'unknown' }}">{{ server.last_status or 'unknown' }}</span>
+  </p>
+  <p class="cta-row">
+    <a class="btn ghost" href="{{ url_for('servers.list_servers') }}">Back to inventory</a>
+  </p>
+</section>
+
+{% if metrics.error %}
+  <div class="flash flash-error" role="alert">
+    Unable to collect metrics: {{ metrics.error }}
+  </div>
+{% else %}
+  <div id="metrics-root" class="metrics-grid">
+    <section class="metric-block">
+      <h2>CPU</h2>
+      {% if metrics.cpu %}
+        <p class="metric-big">{{ metrics.cpu.overall_percent }}%</p>
+        <p class="muted">Overall utilization</p>
+        {% if metrics.cpu.per_core_percent %}
+          <ul class="plain-list compact">
+            {% for core in metrics.cpu.per_core_percent %}
+              <li>Core {{ loop.index0 }}: {{ core }}%</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% else %}
+        <p class="muted">CPU unavailable</p>
+      {% endif %}
+    </section>
+
+    <section class="metric-block">
+      <h2>Memory</h2>
+      {% if metrics.memory %}
+        <p class="metric-big">{{ metrics.memory.used_percent }}%</p>
+        <p class="muted">
+          Used {{ format_bytes(metrics.memory.used_bytes) }} /
+          {{ format_bytes(metrics.memory.total_bytes) }}
+          (available {{ format_bytes(metrics.memory.available_bytes) }})
+        </p>
+      {% else %}
+        <p class="muted">Memory unavailable</p>
+      {% endif %}
+    </section>
+
+    <section class="metric-block wide">
+      <h2>Network</h2>
+      <p class="muted">Cumulative bytes since boot (not rates).</p>
+      {% if metrics.network %}
+        <table class="data-table">
+          <thead>
+            <tr><th>Interface</th><th>Bytes in</th><th>Bytes out</th></tr>
+          </thead>
+          <tbody>
+            {% for iface in metrics.network %}
+              <tr>
+                <td>{{ iface.name }}</td>
+                <td>{{ format_bytes(iface.rx_bytes) }}</td>
+                <td>{{ format_bytes(iface.tx_bytes) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="muted">No interfaces reported</p>
+      {% endif %}
+    </section>
+
+    <section class="metric-block wide">
+      <h2>Ports &amp; connections</h2>
+      <p class="muted">
+        Established TCP connections: {{ metrics.established_connections if metrics.established_connections is not none else '—' }}
+        · Listening rows capped for readability
+      </p>
+      {% if metrics.listening_ports %}
+        <table class="data-table">
+          <thead>
+            <tr><th>Proto</th><th>Local</th><th>Process</th></tr>
+          </thead>
+          <tbody>
+            {% for row in metrics.listening_ports %}
+              <tr>
+                <td>{{ row.protocol }}</td>
+                <td>{{ row.local_address }}</td>
+                <td class="muted">{{ row.process }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="muted">No listening ports parsed</p>
+      {% endif %}
+    </section>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/refresh.js') }}" defer></script>
+{% endblock %}

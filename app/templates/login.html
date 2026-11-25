@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in · Monitoring Demo{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <p class="eyebrow">Access</p>
+  <h1>Sign in</h1>
+  <p class="lede">Use the seeded <strong>admin</strong> account. Password comes from <code>ADMIN_PASSWORD</code> in your local <code>.env</code>.</p>
+
+  <form method="post" class="stack-form" novalidate>
+    {{ form.hidden_tag() }}
+    <label>
+      <span>{{ form.username.label.text }}</span>
+      {{ form.username(autocomplete="username") }}
+      {% for error in form.username.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+    </label>
+    <label>
+      <span>{{ form.password.label.text }}</span>
+      {{ form.password(autocomplete="current-password") }}
+      {% for error in form.password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+    </label>
+    {{ form.submit(class_="btn primary") }}
+  </form>
+</section>
+{% endblock %}
