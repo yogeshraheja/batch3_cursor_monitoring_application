@@ -35,33 +35,33 @@ Reference: [requirements.md](./requirements.md)
 
 ### 1.1 Config and DB bootstrap
 
-- [ ] Add SQLite + minimal config (path under project or temp; configurable)
-- [ ] Add `User` model: `username`, `password_hash`
-- [ ] Seed single `admin` user from `ADMIN_PASSWORD` env (hash with Werkzeug)
-- [ ] **Security:** Never store plaintext admin password; refuse empty/default weak password in committed samples; document that `.env` is local-only
-- [ ] **Docs:** Document env vars and first-run seed behavior in README
+- [x] Add SQLite + minimal config (path under project or temp; configurable)
+- [x] Add `User` model: `username`, `password_hash`
+- [x] Seed single `admin` user from `ADMIN_PASSWORD` env (hash with Werkzeug)
+- [x] **Security:** Never store plaintext admin password; refuse empty/default weak password in committed samples; document that `.env` is local-only
+- [x] **Docs:** Document env vars and first-run seed behavior in README
 
 ### 1.2 Login / logout UI and session
 
-- [ ] Login page (username + password); logout action
-- [ ] Session-based auth; protect non-login routes (redirect to login)
-- [ ] Flash clear errors on bad credentials (no user enumeration details)
-- [ ] **Security:** Use Flask session cookie (`HttpOnly`); CSRF on login form (Flask-WTF or equivalent); constant-time hash verify; rate-limit note (optional simple delay) for demo
-- [ ] **Docs:** Document default username `admin` and that password comes from env (not hard-coded in repo)
+- [x] Login page (username + password); logout action
+- [x] Session-based auth; protect non-login routes (redirect to login)
+- [x] Flash clear errors on bad credentials (no user enumeration details)
+- [x] **Security:** Use Flask session cookie (`HttpOnly`); CSRF on login form (Flask-WTF or equivalent); constant-time hash verify; rate-limit note (optional simple delay) for demo
+- [x] **Docs:** Document default username `admin` and that password comes from env (not hard-coded in repo)
 
 ### 1.3 Unit tests for auth
 
-- [ ] Add `pytest` + Flask test client fixtures
-- [ ] Tests: login success, login failure, logout, protected route redirects when anonymous
-- [ ] **Security:** Assert password hash is not plaintext in DB; assert unauthenticated access denied
-- [ ] **Docs:** Add “Run tests” section (`pytest`) to README
+- [x] Add `pytest` + Flask test client fixtures
+- [x] Tests: login success, login failure, logout, protected route redirects when anonymous
+- [x] **Security:** Assert password hash is not plaintext in DB; assert unauthenticated access denied
+- [x] **Docs:** Add “Run tests” section (`pytest`) to README
 
 ### 1.4 CI/CD — GitHub Actions (auth baseline)
 
-- [ ] Add `.github/workflows/ci.yml`: install deps, run `pytest` on push/PR
-- [ ] Pin Python version; cache pip if simple
-- [ ] **Security:** CI uses dummy `SECRET_KEY` / `ADMIN_PASSWORD` via workflow `env` only; never use real secrets; no SSH keys in CI yet
-- [ ] **Docs:** Short “CI” note in README linking to the workflow
+- [x] Add `.github/workflows/ci.yml`: install deps, run `pytest` on push/PR
+- [x] Pin Python version; cache pip if simple
+- [x] **Security:** CI uses dummy `SECRET_KEY` / `ADMIN_PASSWORD` via workflow `env` only; never use real secrets; no SSH keys in CI yet
+- [x] **Docs:** Short “CI” note in README linking to the workflow
 
 ---
 
@@ -69,31 +69,31 @@ Reference: [requirements.md](./requirements.md)
 
 ### 2.1 Server model
 
-- [ ] Add `Server` model fields per PRD (name, host, ssh_port, ssh_username, auth_type, credential fields, last_status, last_checked_at)
-- [ ] Migration or `create_all` for demo SQLite
-- [ ] **Security:** Do not log passwords/keys; keep DB file out of git; mark credential fields as sensitive in code comments
-- [ ] **Docs:** Document Server fields in `docs/` or README data model blurb
+- [x] Add `Server` model fields per PRD (name, host, ssh_port, ssh_username, auth_type, credential fields, last_status, last_checked_at)
+- [x] Migration or `create_all` for demo SQLite
+- [x] **Security:** Do not log passwords/keys; keep DB file out of git; mark credential fields as sensitive in code comments
+- [x] **Docs:** Document Server fields in `docs/` or README data model blurb
 
 ### 2.2 Add server form (admin)
 
-- [ ] UI form: name, host, port (default 22), username, auth method (password **or** key)
-- [ ] Validate required fields server-side; reject bad host/port input
-- [ ] **Security:** CSRF on form; sanitize/validate host (no shell metacharacters passed to local shell); store SSH password only in local SQLite for demo — document risk; prefer key path over pasting key when possible
-- [ ] **Docs:** How to add a server (minimal steps)
+- [x] UI form: name, host, port (default 22), username, auth method (password **or** key)
+- [x] Validate required fields server-side; reject bad host/port input
+- [x] **Security:** CSRF on form; sanitize/validate host (no shell metacharacters passed to local shell); store SSH password only in local SQLite for demo — document risk; prefer key path over pasting key when possible
+- [x] **Docs:** How to add a server (minimal steps)
 
 ### 2.3 List + remove servers
 
-- [ ] Server list page (name, host, port, last status, last checked)
-- [ ] Remove server action (POST + confirm)
-- [ ] **Security:** Mutations only when authenticated as admin; use POST for delete (not GET); CSRF
-- [ ] **Docs:** Update README inventory section
+- [x] Server list page (name, host, port, last status, last checked)
+- [x] Remove server action (POST + confirm)
+- [x] **Security:** Mutations only when authenticated as admin; use POST for delete (not GET); CSRF
+- [x] **Docs:** Update README inventory section
 
 ### 2.4 Inventory tests + CI
 
-- [ ] Unit/integration tests: add server, list, delete, reject unauthenticated mutation
-- [ ] Ensure CI still green
-- [ ] **Security:** Tests must not print credentials; use fake values
-- [ ] **Docs:** Mention inventory test coverage briefly
+- [x] Unit/integration tests: add server, list, delete, reject unauthenticated mutation
+- [x] Ensure CI still green
+- [x] **Security:** Tests must not print credentials; use fake values
+- [x] **Docs:** Mention inventory test coverage briefly
 
 ---
 
@@ -101,24 +101,24 @@ Reference: [requirements.md](./requirements.md)
 
 ### 3.1 SSH client wrapper
 
-- [ ] Add Paramiko (or equivalent) helper: connect with password or key, timeout, disconnect
-- [ ] Run a single safe read-only command (e.g. `uname -a`) as connectivity probe
-- [ ] **Security:** Disable agent forwarding; strict timeouts; never `shell=True` locally; validate inputs; do not echo credentials in exceptions; known_hosts policy documented for demo (accept-new vs reject — pick and document)
-- [ ] **Docs:** Note that Cursor host must reach target SSH; firewall/SSH prerequisites
+- [x] Add Paramiko (or equivalent) helper: connect with password or key, timeout, disconnect
+- [x] Run a single safe read-only command (e.g. `uname -a`) as connectivity probe
+- [x] **Security:** Disable agent forwarding; strict timeouts; never `shell=True` locally; validate inputs; do not echo credentials in exceptions; known_hosts policy documented for demo (accept-new vs reject — pick and document)
+- [x] **Docs:** Note that Cursor host must reach target SSH; firewall/SSH prerequisites
 
 ### 3.2 Reachability status on list
 
-- [ ] On demand or after add: update `last_status` / `last_checked_at`
-- [ ] Show reachable / failed on list UI
-- [ ] **Security:** Cap concurrent SSH attempts; short timeout so UI cannot hang indefinitely
-- [ ] **Docs:** Explain status meanings
+- [x] On demand or after add: update `last_status` / `last_checked_at`
+- [x] Show reachable / failed on list UI
+- [x] **Security:** Cap concurrent SSH attempts; short timeout so UI cannot hang indefinitely
+- [x] **Docs:** Explain status meanings
 
 ### 3.3 SSH unit tests (mocked)
 
-- [ ] Mock Paramiko; test success and failure paths without real hosts
-- [ ] **Security:** Ensure failure messages are generic in UI (no credential leakage)
-- [ ] **Docs:** How tests mock SSH
-- [ ] **CI:** Keep tests offline (no real SSH in GitHub Actions)
+- [x] Mock Paramiko; test success and failure paths without real hosts
+- [x] **Security:** Ensure failure messages are generic in UI (no credential leakage)
+- [x] **Docs:** How tests mock SSH
+- [x] **CI:** Keep tests offline (no real SSH in GitHub Actions)
 
 ---
 
@@ -126,42 +126,42 @@ Reference: [requirements.md](./requirements.md)
 
 ### 4.1 CPU metrics over SSH
 
-- [ ] Collect overall + per-core CPU % via read-only remote commands (`/proc` or equivalent)
-- [ ] Render on server detail page (read-only)
-- [ ] **Security:** Allowlist remote commands only; no user-controlled remote command strings
-- [ ] **Docs:** Document what CPU fields mean
+- [x] Collect overall + per-core CPU % via read-only remote commands (`/proc` or equivalent)
+- [x] Render on server detail page (read-only)
+- [x] **Security:** Allowlist remote commands only; no user-controlled remote command strings
+- [x] **Docs:** Document what CPU fields mean
 
 ### 4.2 Memory metrics
 
-- [ ] Total / used / free or available (bytes + %)
-- [ ] **Security:** Same allowlisted collectors; handle parse errors safely
-- [ ] **Docs:** Document memory fields
+- [x] Total / used / free or available (bytes + %)
+- [x] **Security:** Same allowlisted collectors; handle parse errors safely
+- [x] **Docs:** Document memory fields
 
 ### 4.3 Network metrics
 
-- [ ] Per-interface bytes in/out; label whether rate or cumulative
-- [ ] **Security:** Bound output size parsed from remote
-- [ ] **Docs:** Clarify rate vs cumulative in UI + README
+- [x] Per-interface bytes in/out; label whether rate or cumulative
+- [x] **Security:** Bound output size parsed from remote
+- [x] **Docs:** Clarify rate vs cumulative in UI + README
 
 ### 4.4 Ports + connections
 
-- [ ] Listening ports (port, protocol, process/PID if available)
-- [ ] Active connections summary (keep UI readable)
-- [ ] **Security:** Read-only remote queries (`ss`/`netstat`); truncate huge outputs; no privilege escalation assumptions beyond SSH user rights
-- [ ] **Docs:** Document port/connection display limits
+- [x] Listening ports (port, protocol, process/PID if available)
+- [x] Active connections summary (keep UI readable)
+- [x] **Security:** Read-only remote queries (`ss`/`netstat`); truncate huge outputs; no privilege escalation assumptions beyond SSH user rights
+- [x] **Docs:** Document port/connection display limits
 
 ### 4.5 Error states
 
-- [ ] SSH/timeout/parse failures show clear error on detail page; app stays up
-- [ ] **Security:** Sanitize error strings shown to UI
-- [ ] **Docs:** Troubleshooting unreachable hosts (minimal)
+- [x] SSH/timeout/parse failures show clear error on detail page; app stays up
+- [x] **Security:** Sanitize error strings shown to UI
+- [x] **Docs:** Troubleshooting unreachable hosts (minimal)
 
 ### 4.6 Metrics tests + CI
 
-- [ ] Unit tests with mocked SSH command outputs for CPU/mem/net/ports
-- [ ] **Security:** Fixtures contain no real secrets
-- [ ] **CI:** All metric parsers covered offline in GitHub Actions
-- [ ] **Docs:** Update acceptance checklist progress
+- [x] Unit tests with mocked SSH command outputs for CPU/mem/net/ports
+- [x] **Security:** Fixtures contain no real secrets
+- [x] **CI:** All metric parsers covered offline in GitHub Actions
+- [x] **Docs:** Update acceptance checklist progress
 
 ---
 
@@ -169,16 +169,16 @@ Reference: [requirements.md](./requirements.md)
 
 ### 5.1 Auto-refresh
 
-- [ ] Client-side refresh of metrics every **10 seconds** (meta refresh or light JS fetch)
-- [ ] **Security:** Refresh only over same-origin authenticated session; no CORS wildcards
-- [ ] **Docs:** Note 10s interval and that many hosts may feel slow
+- [x] Client-side refresh of metrics every **10 seconds** (meta refresh or light JS fetch)
+- [x] **Security:** Refresh only over same-origin authenticated session; no CORS wildcards
+- [x] **Docs:** Note 10s interval and that many hosts may feel slow
 
 ### 5.2 Read-only UI pass
 
-- [ ] Confirm metrics views have no edit controls; inventory mutations only on admin forms
-- [ ] Visual polish pass on list + detail (still one clear layout)
-- [ ] **Security:** Final check — CSRF on all POSTs; session login required everywhere except login
-- [ ] **Docs:** Screenshot or short UI map in README (optional)
+- [x] Confirm metrics views have no edit controls; inventory mutations only on admin forms
+- [x] Visual polish pass on list + detail (still one clear layout)
+- [x] **Security:** Final check — CSRF on all POSTs; session login required everywhere except login
+- [x] **Docs:** Screenshot or short UI map in README (optional)
 
 ---
 
@@ -186,23 +186,23 @@ Reference: [requirements.md](./requirements.md)
 
 ### 6.1 Security sweep (demo-appropriate)
 
-- [ ] Confirm `.gitignore` covers `.env`, `*.db`, private keys, `venv/`
-- [ ] Confirm bind address `0.0.0.0` and port `5777`; hashed admin password; no secrets in repo or workflow files
-- [ ] Confirm SSH command allowlist only; timeouts set
-- [ ] **Docs:** Add `docs/SECURITY.md` — demo warnings (stored SSH creds, local-only, not for production)
+- [x] Confirm `.gitignore` covers `.env`, `*.db`, private keys, `venv/`
+- [x] Confirm bind address `0.0.0.0` and port `5777`; hashed admin password; no secrets in repo or workflow files
+- [x] Confirm SSH command allowlist only; timeouts set
+- [x] **Docs:** Add `docs/SECURITY.md` — demo warnings (stored SSH creds, local-only, not for production)
 
 ### 6.2 Documentation sweep
 
-- [ ] README: quick start, env vars, tests, CI badge/link, link to PRD + this TODO
-- [ ] Mark completed acceptance criteria in [requirements.md](./requirements.md) when done
-- [ ] **Security:** README states “local demo only — not production”
+- [x] README: quick start, env vars, tests, CI badge/link, link to PRD + this TODO
+- [x] Mark completed acceptance criteria in [requirements.md](./requirements.md) when done
+- [x] **Security:** README states “local demo only — not production”
 
 ### 6.3 CI/CD finalize
 
-- [ ] GitHub Actions: lint (optional `ruff`/`flake8`) + `pytest` on push/PR
-- [ ] Fail CI if tests fail; no deploy job required (local demo)
-- [ ] **Security:** No SSH private keys or production passwords in Actions secrets for this demo
-- [ ] **Docs:** Document that “deploy” = run locally; CI is verify-only
+- [x] GitHub Actions: lint (optional `ruff`/`flake8`) + `pytest` on push/PR
+- [x] Fail CI if tests fail; no deploy job required (local demo)
+- [x] **Security:** No SSH private keys or production passwords in Actions secrets for this demo
+- [x] **Docs:** Document that “deploy” = run locally; CI is verify-only
 
 ---
 

@@ -5,14 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Monitoring Demo{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
 </head>
 <body>
   <div class="page">
     <header class="site-header">
       <nav class="nav" aria-label="Primary">
-        <a class="brand" href="{{ url_for('main.index') }}">Batch3 Monitor</a>
+        <a class="brand" href="{{ url_for('main.index') if session.get('user_id') else url_for('auth.login') }}">Batch3 Monitor</a>
         <ul class="nav-links">
-          <li><a href="{{ url_for('main.index') }}">Dashboard</a></li>
+          {% if session.get('user_id') %}
+            <li><a href="{{ url_for('main.index') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('servers.list_servers') }}">Servers</a></li>
+            <li>
+              <form class="inline-form" method="post" action="{{ url_for('auth.logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="linkish">Logout ({{ session.get('username') }})</button>
+              </form>
+            </li>
+          {% else %}
+            <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+          {% endif %}
         </ul>
       </nav>
     </header>
@@ -32,8 +44,9 @@
     </main>
 
     <footer class="site-footer">
-      <p>Local read-only demo · bind <code>0.0.0.0:5777</code> · trusted/lab networks only</p>
+      <p>Local read-only demo · bind <code>0.0.0.0:5777</code> · trusted/lab networks only · not for production</p>
     </footer>
   </div>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

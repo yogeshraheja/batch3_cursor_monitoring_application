@@ -4,22 +4,32 @@
 
 {% block content %}
 <section class="hero-panel">
-  <p class="eyebrow">Phase 0 shell</p>
+  <p class="eyebrow">Read-only demo</p>
   <h1>Monitoring — read-only demo</h1>
   <p class="lede">
-    Agentless Linux host metrics for L1–L3 teams. Sign-in, inventory, and live
-    CPU / memory / network / ports land in later phases.
+    Agentless Linux metrics over SSH. Add hosts under Servers, then open a detail
+    page for CPU, memory, network, and ports (refreshes every 10 seconds).
+  </p>
+  <p class="cta-row">
+    <a class="btn primary" href="{{ url_for('servers.list_servers') }}">Open inventory</a>
+    <a class="btn ghost" href="{{ url_for('servers.add_server') }}">Add server</a>
   </p>
 </section>
 
-<section class="placeholder-grid" aria-label="Upcoming panels">
-  <article class="placeholder-card">
-    <h2>Servers</h2>
-    <p>Inventory and reachability will appear here after admin setup.</p>
-  </article>
-  <article class="placeholder-card">
-    <h2>Live metrics</h2>
-    <p>CPU, memory, network, and listening ports refresh every 10 seconds.</p>
-  </article>
+<section aria-label="Server summary">
+  {% if servers %}
+    <h2 class="section-title">Monitored hosts</h2>
+    <ul class="plain-list">
+      {% for server in servers %}
+        <li>
+          <a href="{{ url_for('servers.server_detail', server_id=server.id) }}">{{ server.name }}</a>
+          <span class="muted">{{ server.host }}:{{ server.ssh_port }}</span>
+          <span class="status status-{{ server.last_status or 'unknown' }}">{{ server.last_status or 'unknown' }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No servers yet. Add a Linux host to start collecting live metrics.</p>
+  {% endif %}
 </section>
 {% endblock %}
